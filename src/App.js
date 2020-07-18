@@ -1,32 +1,39 @@
 import React, { Component } from "react";
-import Marks from "./Marks";
+import { CardData, Chart, CountryPicker } from "./Components";
+import style from "./App.module.css";
+import { fetchData } from "./api";
+import Footer from "./Components/Footer";
+import Header from "./Components/Header";
 class App extends Component {
   constructor(props) {
-    console.log(" App constructor called");
     super(props);
     this.state = {
-      roll: 101
+      data: {},
+      country: "",
     };
   }
-  handle = () => {
-    console.log("button clicked");
-    this.setState({
-      roll: this.state.roll + 1
-    });
+  async componentDidMount() {
+    const fetchedData = await fetchData();
+
+    this.setState({ data: fetchedData });
+  }
+
+  handleCountryChange = async (country) => {
+    const data = await fetchData(country);
+    // console.log(data);
+    this.setState({ data, country: country });
   };
-  componentDidMount() {
-    console.log("app mounted");
-  }
-  componentWillUnmount() {
-    console.log("app unmounted");
-  }
+
   render() {
-    console.log("App Renderd");
+    const { data, country } = this.state;
     return (
-      <div>
-        <h1>Hello from app</h1>
-        <Marks roll={this.state.roll} />
-        <button onClick={this.handle}>Change</button>
+      <div className={style.container}>
+        <Header />
+        <img src="Images/image.png" className={style.img} />
+        <CardData data={data} />
+        <CountryPicker handleCountryChange={this.handleCountryChange} />
+        <Chart data={data} country={country} />
+        <Footer />
       </div>
     );
   }
