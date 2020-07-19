@@ -29,7 +29,7 @@ class App extends Component {
     return (
       <div className={style.container}>
         <Header />
-        <img src="Images/image.png" className={style.img} />
+        <img src="Images/image.png" className={style.img} alt="COVID-19" />
         <CardData data={data} />
         <CountryPicker handleCountryChange={this.handleCountryChange} />
         <Chart data={data} country={country} />
